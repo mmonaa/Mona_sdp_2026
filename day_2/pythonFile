@@ -1,0 +1,31 @@
+!pip install chromadb
+import chromadb
+
+client = chromadb.PersistentClient(path="./my_vector_db")
+collection = client.get_or_create_collection(name="my_docs")
+
+#Add docs
+
+collection.add(
+    documents=[
+        "Python is a programming language used for AI",
+        "Machine learning is a subset of artifical intelligence",
+        "Cricket World cup final results 2024",
+        "Deep learning uses neural networks",
+    ],
+    metadatas=[
+        {"topic":"tech"},
+        {"tpopic":"ai"},
+        {"topic":"sports"},
+        {"topic":"ai"},
+    ],
+    ids=["d1","d2","d3","d4"]
+)
+
+# Query by meaning
+results = collection.query(
+    query_texts=["Tell me about AI"],
+    n_results=2
+)
+
+print("AI Search:", results["documents"])
